@@ -1,0 +1,35 @@
+% main merge sort function, counting inversions
+
+function [s, counts] = mysort(x)
+
+% sort vector a into nodecreasing order.
+n = length(x);
+if n <= 1
+    s = x; counts = 0;
+else
+    a = x(1 : round(n/2));
+    b = x(round(n/2)+1 : n);
+    [ma, counta] = mysort(a);
+    [mb, countb] = mysort(b);
+    [s, counts] = mergec(ma, counta, mb, countb);
+end
+
+
+% merge and count
+function [m,counts] = mergec(a,counta,b,countb)
+la = length(a);
+n = length(a) + length(b);
+m = zeros(1,n);
+a = [a, inf]; b = [b, inf];
+ia = 1; ib = 1;
+counts = counta + countb;
+for i = 1:n
+    if a(ia) < b(ib)
+        m(i) = a(ia);
+        ia = ia + 1;
+    else
+        m(i) = b(ib);
+        ib = ib + 1;
+        counts = counts + (la - ia +1);
+    end
+end
